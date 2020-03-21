@@ -1,3 +1,4 @@
+
 import re
 import nltk
 import requests
@@ -20,7 +21,9 @@ def extract_phone_numbers(string):
     for number in phone_numbers:
         if len(number) == 10:
             valid_phone_numbers.append(number)
-    return valid_phone_numbers[0]
+    if len(valid_phone_numbers) != 0:
+        return valid_phone_numbers[0]
+    return None
 
 def extract_email_addresses(string):
     r = re.compile(r'[\w\.-]+@[\w\.-]+')
@@ -34,11 +37,10 @@ def extract_github_url(document):
     for tagged_sentence in sentences:
         for chunk in tagged_sentence:
             try:
+                if "github.com" in chunk[0]:
+                    urls.append(chunk[0])
                 if chunk[1] == "NNP":
                     names.append(chunk[0])
-                elif chunk[1] == "JJ":
-                    if "github.com" in chunk[0]:
-                        urls.append(chunk[0])
             except:
                 pass
     name_dict = None
@@ -70,7 +72,6 @@ def ie_preprocess(document):
 
 def extract_names(document, email):
     names = []
-    # print(location_names)
     email_name = email.split('@')
     email_name = email_name[0]
     sentences = ie_preprocess(document)
@@ -95,7 +96,7 @@ def extract_names(document, email):
 def get_analysis(filename):
     with open(filename, 'r') as file:
         document = file.read()
-
+    
     number = extract_phone_numbers(document)
     email = extract_email_addresses(document)
     name = extract_names(document, email)
@@ -106,4 +107,4 @@ def get_analysis(filename):
         "email_id"        : email,
         "phone_number"    : number,
         "github_username" : github_username
-    })
+    })  

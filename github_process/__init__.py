@@ -10,15 +10,13 @@ def github_analysis(username):
 	req_body = req.json()
 	repository = []
 
-	with open('data.json') as json_file:
-	    req_body = json.load(json_file)
-
 	for repo in req_body:
 		repo_name = repo['name']
 		repo_language = repo['language']
-		repository.append({
-			"repo_name" : repo_name,
-			"repo_language" : repo_language,
-	 	})
+		if all([repo_language, repo_name]):
+			repository.append({
+				"repo_name" : repo_name,
+				"repo_language" : repo_language,
+		 	})
 
 	return repository

@@ -11,9 +11,14 @@ from werkzeug.utils import secure_filename
 from tesseract import *
 from nltk_process import get_analysis
 from github_process import github_analysis
+from redis_store import loading_data
+from redis_store import retrieve_data
+from calendar_api import create_event
+from utilities import convert_timestamp
 
 upload_file = './upload_files'
 app = Flask(__name__)
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -24,6 +29,8 @@ def upload():
 		file_path = './upload_files/' + PDF_file
 		pages = convert_from_path(PDF_file, 500) 
 		image_counter = 1
+		if os.path.exists("./out_files"):
+			shutil.rmtree('./out_files')
 		os.mkdir("./out_files")
 		
 		for page in pages: 
@@ -44,10 +51,24 @@ def upload():
 		fout.close()
 		analysis = get_analysis(outfile)
 		analysis['repository'] = github_analysis(analysis['github_username'])
-		shutil.rmtree('./out_files')
+			shutil.rmtree('./out_files')
+		loading_data(analysis)
 		return analysis
 
 	return render_template('upload.html')
+
+@app.route('/retrieve', methods=['POST', 'GET'])
+def retrieve():
+	if request.method == 'POST':
+		language = request.form['language']
+		description = request.form['description']
+		date_time = request.form['date_time']
+		candidates = retrieve_data(language.lower())
+		start_timestamp, end_timestamp = convert_timestamp(date_time)
+		create_event(candidates, start_timestamp, end_timestamp, description)
+		return "Invites send"
+
+	return render_template('retrieve.html')
 
 
 if __name__ == '__main__':
