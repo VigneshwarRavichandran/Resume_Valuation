@@ -24,6 +24,7 @@ def loading_data(data):
 	language_scores = generate_language_score(data["repository"])
 	for language in language_scores:
 		redis_store.zadd(language.lower(), {data["email_id"]: int(language_scores[language])})
+	return language_scores
 
 def retrieve_data(data):
 	email_ids = redis_store.zrevrange(

@@ -52,7 +52,7 @@ def upload():
 		analysis = get_analysis(outfile)
 		analysis['repository'] = github_analysis(analysis['github_username'])
 			shutil.rmtree('./out_files')
-		loading_data(analysis)
+		analysis['scores'] = loading_data(analysis)
 		return analysis
 
 	return render_template('upload.html')
