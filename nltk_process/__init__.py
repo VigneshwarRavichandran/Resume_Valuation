@@ -2,6 +2,7 @@
 import re
 import nltk
 import requests
+import json
 
 from nltk.corpus import stopwords
 from nltk.corpus import names
@@ -29,9 +30,8 @@ def extract_email_addresses(string):
     r = re.compile(r'[\w\.-]+@[\w\.-]+')
     return r.findall(string)[0]
 
-def extract_github_url(document):
+def extract_github_url(sentences):
     base_url = "https://github.com/"
-    sentences = ie_preprocess(document)
     names = []
     urls = []
     for tagged_sentence in sentences:
@@ -70,11 +70,10 @@ def ie_preprocess(document):
     sentences = [nltk.pos_tag(sent) for sent in sentences]
     return sentences
 
-def extract_names(document, email):
+def extract_names(sentences, email):
     names = []
     email_name = email.split('@')
     email_name = email_name[0]
-    sentences = ie_preprocess(document)
     for tagged_sentence in sentences:
         for chunk in tagged_sentence:
             try:
@@ -91,20 +90,47 @@ def extract_names(document, email):
                 name_dict = [name, ratio]
         else:
             name_dict = [name, ratio]
-    return name_dict[0]    
+    return name_dict[0]
+
+def extract_languages(sentences):
+    programming_language_scores = {}
+    languages = []
+
+    with open('./nltk_process/programming_languages.json') as pl_json_file:
+        programming_languages_data = json.load(pl_json_file)
+
+    with open('./nltk_process/languages.json') as l_json_file:
+        languages_data = json.load(l_json_file)
+
+    for tagged_sentence in sentences:
+        for chunk in tagged_sentence:
+            if chunk[0].lower() in programming_languages_data:
+                try:
+                    if programming_language_scores[chunk[0].lower()] < 100:
+                        programming_language_scores[chunk[0].lower()] += 10
+                except:
+                    programming_language_scores[chunk[0].lower()] = 10
+            if chunk[0].lower() in languages_data:
+                languages.append(chunk[0].lower())
+
+    return list(set(languages)), programming_language_scores
 
 def get_analysis(filename):
     with open(filename, 'r') as file:
         document = file.read()
     
+    sentences = ie_preprocess(document)
     number = extract_phone_numbers(document)
     email = extract_email_addresses(document)
-    name = extract_names(document, email)
-    github_username = extract_github_url(document)
+    name = extract_names(sentences, email)
+    github_username = extract_github_url(sentences)
+    languages, programming_language_scores = extract_languages(sentences)
 
     return({
-        "name"            : name,
-        "email_id"        : email,
-        "phone_number"    : number,
+        "name" : name,
+        "email_id" : email,
+        "phone_number" : number,
+        "programming_language_scores" : programming_language_scores,
+        "languages" : languages,
         "github_username" : github_username
     })  

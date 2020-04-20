@@ -54,7 +54,8 @@ def upload():
 		if analysis['github_username']:
 			analysis['repository'] = github_analysis(analysis['github_username'])
 		shutil.rmtree('./out_files')
-		analysis['language_scores'] = loading_data(analysis)
+		analysis['github_language_scores'] = loading_data(analysis)
+		print(analysis)
 		return render_template('analysis.html', analysis=analysis)
 
 	return render_template('upload.html')
