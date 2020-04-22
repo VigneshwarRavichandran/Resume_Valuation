@@ -69,7 +69,7 @@ def ie_preprocess(document):
     sentences = [nltk.pos_tag(sent) for sent in sentences]
     return sentences
 
-def extract_names(sentences, email):
+def extract_names(sentences, email, github_username):
     names = []
     email_name = email.split('@')
     email_name = email_name[0]
@@ -81,6 +81,7 @@ def extract_names(sentences, email):
             except:
                 pass
     name_dict = None
+    git_name_dict = None
     for name in names:
         ratio = fuzz.ratio(email_name.lower(),name.lower())
         if name_dict:
@@ -89,6 +90,19 @@ def extract_names(sentences, email):
                 name_dict = [name, ratio]
         else:
             name_dict = [name, ratio]
+
+        if github_username:
+            git_ratio = fuzz.ratio(github_username.lower(),name.lower())
+            if git_name_dict:
+                git_largest_ratio = git_name_dict[1]
+                if git_ratio > git_largest_ratio:
+                    git_name_dict = [name, git_ratio]
+            else:
+                git_name_dict = [name, git_ratio]
+
+    if git_name_dict:
+        if git_name_dict[1] > name_dict[1]:
+            return git_name_dict[0]
     return name_dict[0]
 
 def extract_languages(sentences):
@@ -121,8 +135,8 @@ def get_analysis(filename):
     sentences = ie_preprocess(document)
     number = extract_phone_numbers(document)
     email = extract_email_addresses(document)
-    name = extract_names(sentences, email)
     github_username = extract_github_url(sentences)
+    name = extract_names(sentences, email, github_username)
     languages, programming_language_scores = extract_languages(sentences)
 
     return({

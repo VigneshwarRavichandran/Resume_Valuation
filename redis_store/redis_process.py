@@ -19,11 +19,16 @@ def generate_language_score(repository):
 
 def loading_data(data):
 	redis_store.hset(data["email_id"], 'email_id', data["email_id"])
-	redis_store.hset(data["email_id"], 'email_id', data["name"])
+	redis_store.hset(data["email_id"], 'name', data["name"].upper())
 	if data["phone_number"]:
 		redis_store.hset(data["email_id"], 'phone', data["phone_number"])
 	else:
 		redis_store.hset(data["email_id"], 'phone', 'null')
+	if data["github_username"]:
+		redis_store.hset(data["email_id"], 'github_id', data["github_username"])
+	else:
+		redis_store.hset(data["email_id"], 'github_id', 'null')
+
 	language_scores = []
 	if "repository" in data:
 		scores = generate_language_score(data["repository"])
@@ -36,5 +41,5 @@ def loading_data(data):
 
 def retrieve_data(data):
 	email_ids = redis_store.zrevrange(
-		data, 0, 1)
+		data, 0, -1)
 	return convert(email_ids)
