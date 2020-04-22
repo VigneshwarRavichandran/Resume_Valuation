@@ -3,7 +3,7 @@ import redis
 from utilities.data_conversion import convert
 
 
-redis_store = redis.Redis(host='localhost')
+redis_store = redis.Redis()
 redis_pipe = redis_store.pipeline()
 
 

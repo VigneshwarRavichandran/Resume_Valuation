@@ -1,0 +1,44 @@
+.
+├── app.py
+|
+├── calendar_api
+│   ├── credentials.json
+│   ├── events_creation.py
+│   └──__init__.py
+|
+├── github_process
+│   ├── github_request.py
+│   └──__init__.py
+|
+├── models
+│   ├── __init__.py
+│   └── tables.py
+|
+├── nltk_process
+│   ├── __init__.py
+│   ├── languages.json
+│   ├── nltk_analysis.py
+│   └── programming_languages.json
+|
+├── redis_store
+│   ├── __init__.py
+│   └── redis_process.py
+|
+├── templates
+│   ├── analysis.html
+│   ├── retrieve.html
+│   └── upload.html
+|
+├── tesseract
+│   ├── __init__.py
+│   └── tesseract_processing.py
+|
+├── token.pickle
+|
+├── upload_files/
+|
+├── utilities
+│   ├── data_conversion.py
+│   └── __init__.py
+|
+└── write_service.py
