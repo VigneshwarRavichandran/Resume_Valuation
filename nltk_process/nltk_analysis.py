@@ -48,16 +48,18 @@ def extract_github_url(sentences):
     for url in urls:
         url_segments = url.split('/')
         username = url_segments[-1]
-        req = requests.get(base_url+username)
+        github_url = base_url+username
+        req = requests.get(github_url)
         if req.status_code == requests.codes.ok:
-            return username
+            return username, github_url
 
     for name in names:
         if has_found:
             username = name
-            req = requests.get(base_url+username)
+            github_url = base_url+username
+            req = requests.get(github_url)
             if req.status_code == requests.codes.ok:
-                return username
+                return username, github_url
         else:
             if "github" in name.lower():
                 has_found = True
@@ -126,7 +128,14 @@ def extract_languages(sentences):
             if chunk[0].lower() in languages_data:
                 languages.append(chunk[0].lower())
 
-    return list(set(languages)), programming_language_scores
+    final_prog_score = []
+    for programming_language in programming_language_scores:
+        final_prog_score.append({
+            'language' : programming_language,
+            'score' : programming_language_scores[programming_language]
+        })
+
+    return list(set(languages)), final_prog_score, programming_language_scores
 
 def get_analysis(filename):
     with open(filename, 'r') as file:
@@ -135,9 +144,9 @@ def get_analysis(filename):
     sentences = ie_preprocess(document)
     number = extract_phone_numbers(document)
     email = extract_email_addresses(document)
-    github_username = extract_github_url(sentences)
+    github_username, github_url = extract_github_url(sentences)
     name = extract_names(sentences, email, github_username)
-    languages, programming_language_scores = extract_languages(sentences)
+    languages, programming_language_scores, programming_language_scores_dict = extract_languages(sentences)
 
     return({
         "name" : name,
@@ -145,5 +154,7 @@ def get_analysis(filename):
         "phone_number" : number,
         "programming_language_scores" : programming_language_scores,
         "languages" : languages,
-        "github_username" : github_username
+        "github_username" : github_username,
+        "github_url" : github_url,
+        "programming_language_scores_dict" : programming_language_scores_dict
     })  

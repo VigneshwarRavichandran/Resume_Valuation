@@ -33,6 +33,7 @@ isodate==0.6.0
 itsdangerous==1.1.0
 jedi==0.17.0
 Jinja2==2.10.3
+linkedin-api==1.1.0
 lxml==4.4.2
 MarkupSafe==1.1.1
 more-itertools==8.1.0
@@ -56,6 +57,8 @@ pyasn1==0.4.8
 pyasn1-modules==0.2.8
 Pygments==2.6.1
 pytesseract==0.3.1
+python-docx==0.8.10
+python-linkedin-v2==0.9.4
 pytz==2019.3
 PyYAML==5.3
 redis==3.3.11
