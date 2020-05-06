@@ -79,16 +79,25 @@ def upload():
 
 @app.route('/retrieve', methods=['POST', 'GET'])
 def retrieve():
+	content = {}
+
 	if request.method == 'POST':
 		language = request.form['language']
 		description = request.form['description']
 		date_time = request.form['date_time']
-		candidates = retrieve_data(language.lower())
+		candidates_count = int(request.form['candidates_count'])
+		candidates = retrieve_data(language.lower(), candidates_count)
 		start_timestamp, end_timestamp = convert_timestamp(date_time)
 		create_event(candidates, start_timestamp, end_timestamp, description)
-		return "Invites send"
+		if len(candidates) == 0:
+			content['message'] = "No candidates matched the given requirements..."
+		elif len(candidates) < candidates_count:
+			content['message'] = "Only {} candidates matched the given requirements... Invites were sent to those candidates".format(len(candidates))
+		elif len(candidates) >= candidates_count:
+			content['message'] = "Invites were sent to the top {} candidates who fullfilled the requirements".format(candidates_count)
+		return render_template('retrieve.html', content=content)
 
-	return render_template('retrieve.html')
+	return render_template('retrieve.html', content=content)
 
 
 if __name__ == '__main__':

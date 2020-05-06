@@ -1,28 +1,173 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Retrieve</title>
-	<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-</head>
-<body>
-	<div class="container">
-		<h3>Job Search</h3>
-		<form method="post">
-		    <div class="form-group">
-		      <label>Language</label>
-		      <input type="text" class="form-control" id="language" placeholder="Enter language" name="language"><br>
-		      <label>description</label>
-		      <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"><br>
-		      <label>Date & Time</label>
-		      <input type="datetime-local" id="date_time" placeholder="Enter Date and Time" name="date_time"><br>
-		    </div>
-		    <br>
-	    	<button type="submit" class="btn btn-default">Send Invites</button>
-	  </form>
-	</div>
-</body>
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="img/favicon.png" type="image/png">
+        <title>Dude Developers</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="static/css/bootstrap.css">
+        <link rel="stylesheet" href="static/vendors/linericon/style.css">
+        <link rel="stylesheet" href="static/css/font-awesome.min.css">
+        <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="static/vendors/lightbox/simpleLightbox.css">
+        <link rel="stylesheet" href="static/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="static/vendors/animate-css/animate.css">
+        <link rel="stylesheet" href="static/vendors/popup/magnific-popup.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="static/css/style.css">
+        <link rel="stylesheet" href="static/css/responsive.css">
+    </head>
+    <body>
+        
+        <!--================Header Menu Area =================-->
+        <header class="header_area">
+            <div class="main_menu">
+            	<nav class="navbar navbar-expand-lg navbar-light">
+					<div class="container box_1620">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+							<ul class="nav navbar-nav menu_nav ml-auto">
+								<li class="nav-item active"><a class="nav-link" href="upload">upload</a></li> 
+								<li class="nav-item"><a class="nav-link" href="retrieve">retrieve</a></li> 
+							</ul>
+						</div> 
+					</div>
+            	</nav>
+            </div>
+        </header>
+        <!--================Header Menu Area =================-->
+        
+        <!--================Home Banner Area =================-->
+        <section class="banner_area">
+            <div class="box_1620">
+				<div class="banner_inner d-flex align-items-center">
+					<div class="container">
+						<div class="banner_content text-center">
+							<h2>Interview Invitation</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </section>
+        <!--================End Home Banner Area =================-->
+        <!--================Contact Area =================-->
+          <!--================Contact Area =================-->
+        <section class="contact_area p_120">
+            <div class="container">
+                <div class="row">
+                    {% if content['message'] %}
+                    <p>* <mark>{{ content['message'] }}</mark><p><br>
+                    {% endif %}
+                    <div class="col-lg-9">
+                        <form method="post">
+                            <div class="form-group">
+                              <label>Language</label>
+                              <input type="text" class="form-control" id="language" placeholder="Enter language" name="language"><br>
+                              <label>Number of Candidates</label>
+                              <input type="number" class="form-control" id="candidates_count" placeholder="Enter number of candidates" name="candidates_count"><br>
+                              <label>Description</label>
+                              <input type="text" class="form-control" id="description" placeholder="Enter description" name="description"><br>
+                              <label>Date & Time</label>
+                              <input type="datetime-local" id="date_time" placeholder="Enter Date and Time" name="date_time"><br>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn submit_btn">Send Invites</button>
+                      </form>
+<!--         <form method="post">
+        <div class="form-group">
+        <label>Language</label>
+        <input type="text" class="form-control" id="language" placeholder="Enter language" name="language"><br>
+        <label>Number of candidates</label>
+        <input type="text" class="form-control" id="candidates" placeholder="Enter candidates count" name="candidates"><br>
+        <label>description</label>
+        <div class="form-group">
+        <textarea class="form-control" name="message" id="message" rows="3" placeholder="Enter description"></textarea>
+        <br>
+        <label>Date & Time</label>
+        <input type="datetime-local" id="date_time" placeholder="Enter Date and Time" name="date_time"><br>
+        </div>
+        <br>
+
+        <button type="submit" value="submit" class="btn submit_btn">Send invite</button>
+        </form> -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--================Contact Area =================-->
+        <!--================Footer Area =================-->
+       
+        <!--================End Footer Area =================-->
+        
+        <!--================Contact Success and Error message Area =================-->
+        <div id="success" class="modal modal-message fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-close"></i>
+                        </button>
+                        <h2>Thank you</h2>
+                        <p>Your message is successfully sent...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals error -->
+
+        <div id="error" class="modal modal-message fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-close"></i>
+                        </button>
+                        <h2>Sorry !</h2>
+                        <p> Something went wrong </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--================End Contact Success and Error message Area =================-->
+        
+        
+        
+        
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="static/js/jquery-3.3.1.min.js"></script>
+        <script src="static/js/popper.js"></script>
+        <script src="static/js/bootstrap.min.js"></script>
+        <script src="static/js/stellar.js"></script>
+        <script src="static/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="static/vendors/nice-select/js/jquery.nice-select.min.js"></script>
+        <script src="static/vendors/isotope/imagesloaded.pkgd.min.js"></script>
+        <script src="static/vendors/isotope/isotope.pkgd.min.js"></script>
+        <script src="static/vendors/popup/jquery.magnific-popup.min.js"></script>
+        <script src="static/vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="static/js/jquery.ajaxchimp.min.js"></script>
+        <script src="static/js/mail-script.js"></script>
+        <script src="static/vendors/counter-up/jquery.waypoints.min.js"></script>
+        <script src="static/vendors/counter-up/jquery.counterup.min.js"></script>
+        <!-- contact js -->
+        <script src="static/js/jquery.form.js"></script>
+        <script src="static/js/jquery.validate.min.js"></script>
+        <script src="static/js/contact.js"></script>
+        <!--gmaps Js-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+        <script src="static/js/gmaps.min.js"></script>
+        <script src="static/js/theme.js"></script>
+    </body>
 </html>
+ -->

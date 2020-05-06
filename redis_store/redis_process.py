@@ -40,11 +40,11 @@ def loading_data(data):
 			redis_store.zadd(language.lower(), {data["email_id"]: total_score})
 		for programming_language in data["programming_language_scores_dict"]:
 			if programming_language not in scores:
-				redis_store.zadd(language.lower(), {data["email_id"]: data["programming_language_scores_dict"][programming_language]})
+				redis_store.zadd(programming_language.lower(), {data["email_id"]: data["programming_language_scores_dict"][programming_language]})
 		return language_scores
 	return None
 
-def retrieve_data(data):
+def retrieve_data(data, limit):
 	email_ids = redis_store.zrevrange(
-		data, 0, -1)
+		data, 0, limit)
 	return convert(email_ids)
